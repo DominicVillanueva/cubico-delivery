@@ -1,0 +1,45 @@
+@import "../../../assets/styles/variables";
+
+.footer {
+  background-color: $primary-cubico;
+  color: white;
+
+  &__container {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+
+    &-left {
+      display: flex;
+      align-items: center;
+      font-size: 12px;
+    }
+
+    &-right {
+      font-size: 10px;
+    }
+  }
+}
+
+.footer__container {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+}
+
+.footer-component {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  padding: 1% 0%;
+  text-align: center;
+  background-color: $primary-cubico;
+  color: white;
+}

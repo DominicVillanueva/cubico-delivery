@@ -1,0 +1,233 @@
+<section class="dashboard-component">
+  <div class="dashboard-component__top">
+    <div class="dashboard-component__top-filters top-filters">
+      <mat-form-field class="w-100" appearance="standard">
+        <mat-label>Seleccionar fecha: </mat-label>
+        <input
+          matInput
+          [matDatepicker]="picker"
+          (dateChange)="onClick_filtrar_usuarios($event)"
+          [(ngModel)]="fechaSeleccionada"
+          readonly
+          (click)="picker.open()"
+        />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker disabled="false"></mat-datepicker>
+      </mat-form-field>
+      <mat-list class="top-filters__list">
+        <h3 class="top-filters__list-title" matSubheader>
+          Embarques
+        </h3>
+        <mat-selection-list
+          #users
+          class="top-filters__list-selection list-selection"
+          (selectionChange)="onClick_obtener_operacion($event)"
+        >
+          <ng-container
+            *ngIf="
+              listarEmbarques.length > 0;
+              then listaConUsuarios;
+              else listaVaciaUsuarios
+            "
+          ></ng-container>
+          <ng-template #listaConUsuarios>
+            <mat-list-option
+              class="list-selection__options"
+              *ngFor="let usuario of listarEmbarques"
+              [value]="usuario"
+            >
+              <h4 mat-line>{{ usuario.strNomUsuario }}</h4>
+              <small class="list-selection__options-small" mat-line>
+                {{ usuario.Id_Tra }}
+              </small>
+            </mat-list-option>
+          </ng-template>
+          <ng-template #listaVaciaUsuarios>
+            <div class="top-filters__list-empty list-empty">
+              <h1 class="list-empty__title">SIN DATOS</h1>
+            </div>
+          </ng-template>
+        </mat-selection-list>
+      </mat-list>
+    </div>
+    <div class="dashboard-component__top-cards cards">
+      <div class="cards__top">
+        <mat-card class="cards__top-delivery delivery">
+          <mat-card-header>
+            <mat-card-title>
+              Entregados
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="delivery__content">
+            <mat-icon><i class="fa fa-clipboard-check fa-2x"></i></mat-icon>
+            <h1 class="delivery__content-title">
+              500
+            </h1>
+          </mat-card-content>
+        </mat-card>
+        <mat-card class="cards__top-motivated motivated">
+          <mat-card-header>
+            <mat-card-title>
+              Motivados
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="motivated__content">
+            <mat-icon>
+              <i class="fa fa-times-circle fa-2x"></i>
+            </mat-icon>
+            <h1 class="motivated__content-title">
+              500
+            </h1>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="cards__bottom">
+        <mat-card class="w-100 cards__bottom-send send">
+          <mat-card-header>
+            <mat-card-title>
+              Total de Envíos
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="send__content">
+            <mat-icon>
+              <i class="fa fa-shipping-fast fa-2x"></i>
+            </mat-icon>
+            <h1 class="send__content-title">
+              500
+            </h1>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+  <div class="dashboard-component__middle">
+    <h1 class="title-container">
+      {{ texto }}
+    </h1>
+    <div class="dashboard-component__middle-maps">
+      <!-- 
+        MOTIVADO 5: ES EL ESTADO ENTREGADO
+        MOTIVADO 22: ES EL ESTADO MOTIVADO
+       -->
+      <agm-map
+        [zoom]="zoom"
+        [latitude]="lat"
+        [longitude]="lng"
+        [disableDefaultUI]="false"
+        [scrollwheel]="null"
+        [gestureHandling]="'cooperative'"
+        [zoomControl]="false"
+        [usePanning]="true"
+      >
+        <agm-marker
+          *ngFor="let item of listarOperaciones"
+          [latitude]="item.Cx"
+          [longitude]="item.Cy"
+          [animation]="'DROP'"
+          [iconUrl]="colorMarker"
+        ></agm-marker>
+      </agm-map>
+
+      <div class="dashboard-component__middle-legend legend">
+        <button class="legend__button" [matMenuTriggerFor]="legendMenu" mat-fab>
+          <mat-icon>menu_book</mat-icon>
+        </button>
+        <mat-menu #legendMenu="matMenu" yPosition="above">
+          <h1 class="legend__title">Leyenda</h1>
+          <mat-divider></mat-divider>
+          <div class="legend__list" *ngFor="let prop of listarLeyendas">
+            <span>{{ prop.name }}</span>
+            <div
+              class="legend__list-container"
+              [style.background-color]="prop.color"
+            ></div>
+          </div>
+        </mat-menu>
+      </div>
+    </div>
+  </div>
+  <div class="dashboard-component__bottom">
+    <h1 class="title-container">
+      Cuadro de Resumen
+    </h1>
+    <mat-form-field
+      class="dashboard-component__bottom-search w-100"
+      appearance="outline"
+    >
+      <mat-label>Busqueda</mat-label>
+      <input matInput (keyup)="applyFilter($event)" />
+      <mat-icon matSuffix>
+        search
+      </mat-icon>
+    </mat-form-field>
+    <table
+      mat-table
+      [dataSource]="dataSource"
+      multiTemplateDataRows
+      class="mat-elevation-z4"
+    >
+      <ng-container matColumnDef="Id_Tra">
+        <th mat-header-cell *matHeaderCellDef>Embarque</th>
+        <td mat-cell *matCellDef="let row">{{ row.Id_Tra }}</td>
+        <td mat-footer-cell *matFooterCellDef>TOTAL</td>
+      </ng-container>
+
+      <ng-container matColumnDef="Usuario">
+        <th mat-header-cell *matHeaderCellDef>Código</th>
+        <td mat-cell *matCellDef="let row">{{ row.Usuario }}</td>
+        <td mat-footer-cell *matFooterCellDef></td>
+      </ng-container>
+
+      <ng-container matColumnDef="Apenom">
+        <th mat-header-cell *matHeaderCellDef>Nombre</th>
+        <td mat-cell *matCellDef="let row">{{ row.Apenom }}</td>
+        <td mat-footer-cell *matFooterCellDef></td>
+      </ng-container>
+
+      <ng-container matColumnDef="Pendientes">
+        <th mat-header-cell *matHeaderCellDef>Pendientes</th>
+        <td mat-cell *matCellDef="let row">{{ row.Pendientes }}</td>
+        <td mat-footer-cell *matFooterCellDef>{{ getTotalPendientes() }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="Confirmados">
+        <th mat-header-cell *matHeaderCellDef>Confirmados</th>
+        <td mat-cell *matCellDef="let row">{{ row.Confirmados }}</td>
+        <td mat-footer-cell *matFooterCellDef>{{ getTotalConfirmados() }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="Motivados">
+        <th mat-header-cell *matHeaderCellDef>Motivados</th>
+        <td mat-cell *matCellDef="let row">{{ row.Motivados }}</td>
+        <td mat-footer-cell *matFooterCellDef>{{ getTotalMotivados() }}</td>
+      </ng-container>
+
+      <!-- <ng-container matColumnDef="Recojos">
+        <th mat-header-cell *matHeaderCellDef>Recojos</th>
+        <td mat-cell *matCellDef="let row"> {{row.Recojos}} </td>
+      </ng-container> -->
+
+      <ng-container matColumnDef="Total">
+        <th mat-header-cell *matHeaderCellDef>Total</th>
+        <td mat-cell *matCellDef="let row">{{ row.Total }}</td>
+        <td mat-footer-cell *matFooterCellDef>{{ getTotal() }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="Porcentaje">
+        <th mat-header-cell *matHeaderCellDef>Productividad</th>
+        <td mat-cell *matCellDef="let row">{{ row.Porcentaje }}</td>
+        <td mat-footer-cell *matFooterCellDef></td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+      <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
+      <tr mat-footer-row *matFooterRowDef="columnsToDisplay"></tr>
+    </table>
+
+    <mat-paginator
+      class="dashboard-component__bottom-paginator"
+      [pageSizeOptions]="[5, 10, 25, 100]"
+      showFirstLastButtons
+    ></mat-paginator>
+  </div>
+</section>

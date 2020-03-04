@@ -1,1 +1,157 @@
+// Variables globales
+@import "./assets/styles/variables";
+
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@import "~@angular/material/theming";
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat-core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$cubico-delivery-primary: mat-palette($mat-indigo);
+$cubico-delivery-accent: mat-palette($mat-pink, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$cubico-delivery-warn: mat-palette($mat-red);
+
+// Create the theme object (a Sass map containing all of the palettes).
+$cubico-delivery-theme: mat-light-theme(
+  $cubico-delivery-primary,
+  $cubico-delivery-accent,
+  $cubico-delivery-warn
+);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include angular-material-theme($cubico-delivery-theme);
+
 /* You can add global styles to this file, and also import other style files */
+* {
+  background-repeat: no-repeat;
+  padding: 0;
+}
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+agm-map {
+  height: 500px;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.title-container {
+  border-color: #111;
+  background-color: #0b79af;
+  color: #fff;
+  margin: 0px;
+  padding: 12px;
+  font-weight: lighter;
+  text-align: center;
+  margin-bottom: 0px !important;
+}
+
+// styles para el SnackBar
+.mat-simple-snackbar-action {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+// Estilos globales de la Tabla
+table {
+  margin-top: -8px;
+  width: 100%;
+
+  tr.example-detail-row {
+    height: 0;
+  }
+
+  tr.example-element-row:not(.example-expanded-row):hover {
+    background: #f0f0f0;
+  }
+
+  tr.example-element-row:not(.example-expanded-row):active {
+    background: #efefef;
+  }
+
+  .example-element-row td {
+    border-bottom-width: 0;
+  }
+
+  .example-element-detail {
+    overflow: hidden;
+    display: flex;
+  }
+
+  .example-element-diagram {
+    min-width: 80px;
+    border: 2px solid black;
+    padding: 8px;
+    font-weight: lighter;
+    margin: 8px 0;
+    height: 104px;
+  }
+
+  .example-element-symbol {
+    font-weight: bold;
+    font-size: 40px;
+    line-height: normal;
+  }
+
+  .example-element-description {
+    padding: 16px;
+  }
+
+  .example-element-description-attribution {
+    opacity: 0.5;
+  }
+}
+
+// Estilos Material.
+.mat-pseudo-checkbox-checked,
+.mat-pseudo-checkbox-indeterminate,
+.mat-accent .mat-pseudo-checkbox-checked,
+.mat-accent .mat-pseudo-checkbox-indeterminate {
+  background-color: $primary-cubico;
+}
+.mat-card-header-text {
+  margin: 0px !important;
+  width: 100%;
+  text-align: end;
+}
+
+.mat-menu-panel {
+  min-width: 155px !important;
+}
+
+tr.mat-footer-row td{
+  color: white;
+  background-color: #0b79af;
+  font-weight: 100;
+}
+
+// mat-sidenav-container,
+// mat-sidenav-content,
+// mat-sidenav {
+//   height: 100%;
+// }
+
+// mat-sidenav-content {
+//   display: flex !important;
+//   flex: 1 0 !important;
+//   flex-flow: column wrap !important;
+//   background-color: #f9f9f9 !important;
+// }

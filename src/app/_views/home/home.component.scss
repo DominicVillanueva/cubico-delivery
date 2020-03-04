@@ -1,0 +1,21 @@
+.home-component {
+  display: flex;
+  flex-flow: column nowrap;
+  height: 100%;
+
+  app-header {
+    z-index: 2;
+  }
+
+  main {
+    padding: 20px;
+  }
+
+  mat-sidenav {
+    width: 250px;
+  }
+
+  mat-sidenav-container {
+    flex: 1 0;
+  }
+}

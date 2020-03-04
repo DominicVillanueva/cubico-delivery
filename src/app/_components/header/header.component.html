@@ -1,0 +1,58 @@
+<section class="header-component">
+  <mat-toolbar>
+    <div class="header-component__navbar">
+      <button mat-icon-button (click)="onToggleSidenav()">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </div>
+    <div class="header-component__container">
+      <a class="header-component__container-logo" routerLink="/inicio">
+        <img
+          src="../../../assets/img/logo_cubico.png"
+          width="220"
+          height="100%"
+        />
+      </a>
+      <div class="header-component__container-links container-links">
+        <ul class="container-links__items">
+          <!-- <li>
+            <a
+              class="container-links__items-url"
+              mat-button
+              routerLink="/inicio"
+              >Usuarios</a
+            >
+          </li> -->
+          <li>
+            <a
+              class="container-links__items-url"
+              mat-button
+              [matMenuTriggerFor]="menu"
+            >
+              <span>{{usuario.Perfil}}</span>
+              <mat-icon>expand_more</mat-icon>
+            </a>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item>
+                <mat-icon>edit</mat-icon>
+                <span>Editar Perfil</span>
+              </button>
+              <button mat-menu-item>
+                <mat-icon>vpn_key</mat-icon>
+                <span>Cambiar Contraseña</span>
+              </button>
+              <button
+                mat-menu-item
+                (click)="onClick_cerrar_sesion()"
+                [routerLink]="['/login']"
+              >
+                <mat-icon>power_settings_new</mat-icon>
+                <span>Cerrar Sesión</span>
+              </button>
+            </mat-menu>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </mat-toolbar>
+</section>

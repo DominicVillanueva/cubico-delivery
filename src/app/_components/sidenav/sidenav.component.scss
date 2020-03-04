@@ -1,0 +1,16 @@
+.sidenav-component {
+  &__link {
+    text-decoration: none;
+    color: #8a8a8a;
+
+    &:hover,
+    &:active {
+      color: #a7a7a7;
+    }
+
+    &-title {
+      display: inline-block;
+      padding-left: 6px;
+    }
+  }
+}

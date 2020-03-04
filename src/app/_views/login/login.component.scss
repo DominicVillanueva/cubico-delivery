@@ -1,0 +1,59 @@
+@import "../../../assets/styles/variables";
+
+.login-view {
+  display: flex;
+  height: 100vh;
+
+  &__left {
+    display: flex;
+    position: relative;
+    flex: 1 0;
+    background: url(../../../assets/img/background-login.jpeg) 50% / cover
+      no-repeat;
+
+    &-img {
+      padding: 20px;
+      width: 100%;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+  }
+
+  &__right {
+    display: flex;
+    width: 100%;
+    flex: 1 0;
+    background-color: #fff;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  }
+}
+
+.login {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  flex-flow: column nowrap;
+  align-items: center;
+  text-align: center;
+
+  &__logo {
+    padding-bottom: 10px;
+  }
+
+  &__form {
+    display: flex;
+    flex-flow: column nowrap;
+    width: 70%;
+
+    &-button {
+      width: 225px;
+      height: 45px;
+      align-self: center;
+      background-color: $primary-cubico;
+      color: #ffffff;
+    }
+  }
+}
