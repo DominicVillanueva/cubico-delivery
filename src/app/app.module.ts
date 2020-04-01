@@ -47,7 +47,7 @@ import { AgmCoreModule } from "@agm/core";
     FormsModule,
     ReactiveFormsModule,
     AgmCoreModule.forRoot({
-      apiKey: "AIzaSyDc93Y3Wne4C1fLFh1XIIOEle0r34HV0mg"
+      apiKey: ""
     }),
   ],
   providers: [GuardiaSession, GuardiaInicio],
