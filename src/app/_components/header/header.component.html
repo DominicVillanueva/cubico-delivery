@@ -6,10 +6,10 @@
       </button>
     </div>
     <div class="header-component__container">
-      <a class="header-component__container-logo" routerLink="/inicio">
+      <a class="header-component__container-logo" routerLink="/dashboard/inicio">
         <img
-          src="../../../assets/img/logo_cubico.png"
-          width="220"
+          src="assets/img/logo_delivery.png"
+          width="180"
           height="100%"
         />
       </a>
@@ -33,14 +33,14 @@
               <mat-icon>expand_more</mat-icon>
             </a>
             <mat-menu #menu="matMenu">
-              <button mat-menu-item>
+              <!-- <button mat-menu-item>
                 <mat-icon>edit</mat-icon>
                 <span>Editar Perfil</span>
               </button>
               <button mat-menu-item>
                 <mat-icon>vpn_key</mat-icon>
                 <span>Cambiar Contraseña</span>
-              </button>
+              </button> -->
               <button
                 mat-menu-item
                 (click)="onClick_cerrar_sesion()"

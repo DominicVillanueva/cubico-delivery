@@ -7,8 +7,8 @@ export class Parametros {
     };
 
     //Home
-    public static RUTA_INICIO = '/inicio';
-    public static RUTA_LOGIN = '/login'
+    public static RUTA_INICIO = '/dashboard/inicio';
+    public static RUTA_LOGIN = '/login';
 
     //LOCALSTORAGE DATOS DEL USUARIO
     public static LS_DATOS_USUARIO: string = 'dt_us';

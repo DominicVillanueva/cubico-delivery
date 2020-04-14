@@ -23,6 +23,12 @@ export interface IFiltroOperaciones {
   dtFechaHoraRegistro?: string;
 }
 
+export interface IFiltroActividadUsuario {
+  intIdActividad?: number;
+  strUser?: string;
+  dtFecha?: string;
+}
+
 export interface IResponseOperacion {
   Cx?: number;
   Cy?: number;
@@ -40,4 +46,16 @@ export interface IResponseOperacion {
   strReceivedBy: string;
   strSenderName: string;
   strTipoTransmision: string;
+}
+
+export interface IResponseActividadUsuario {
+  CxFin?: number;
+  CxInicio?: number;
+  CyFin?: number;
+  CyInicio?: number;
+  FinActividad?: string;
+  Id_Actividad?: number;
+  Id_Terminal?: number;
+  InicioActividad?: string;
+  UsuarioRuta?: string;
 }

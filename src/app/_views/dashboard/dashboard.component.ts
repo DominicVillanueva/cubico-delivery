@@ -1,8 +1,11 @@
+import { Url } from "../../utils/Url";
 import {
   IEmbarque,
   IListarActividades,
   IFiltroOperaciones,
-  IResponseOperacion
+  IResponseOperacion,
+  IResponseActividadUsuario,
+  IFiltroActividadUsuario,
 } from "./../../_models/AdministrarUsuario";
 import { UsersService } from "./../../services/users-services/users.service";
 import { Component, OnInit, ViewChild } from "@angular/core";
@@ -11,14 +14,14 @@ import {
   state,
   style,
   transition,
-  animate
+  animate,
 } from "@angular/animations";
 import { MatTableDataSource } from "@angular/material/table";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatDatepickerInputEvent } from "@angular/material/datepicker";
 import {
   MatSelectionList,
-  MatSelectionListChange
+  MatSelectionListChange,
 } from "@angular/material/list";
 
 @Component({
@@ -32,9 +35,9 @@ import {
       transition(
         "expanded <=> collapsed",
         animate("225ms cubic-bezier(0.4, 0.0, 0.2, 1)")
-      )
-    ])
-  ]
+      ),
+    ]),
+  ],
 })
 export class DashboardComponent implements OnInit {
   dataSource: any;
@@ -46,7 +49,7 @@ export class DashboardComponent implements OnInit {
     "Confirmados",
     "Motivados",
     "Total",
-    "Porcentaje"
+    "Porcentaje",
   ];
 
   // VARIABLES PARA GOOGLE MAPS
@@ -55,35 +58,46 @@ export class DashboardComponent implements OnInit {
   lng: number = -77.042755;
   zoom: number = 8;
 
+  // Optiones menu
+  openInfo: boolean = false;
+
   listarActividades: IListarActividades[] = [];
   listarEmbarques: IEmbarque[] = [];
   filtrarOperacion: IFiltroOperaciones = {};
+  filtrarActividadUsuario: IFiltroActividadUsuario = {};
   listarOperaciones: IResponseOperacion[] = [];
+  listarActividadesUsuario: IResponseActividadUsuario[] = [];
   fechaSeleccionada: string;
   colorMarker: string;
   listColorsMarkes: string[] = ["yellow", "brown", "green", "blue", "red"];
 
+  markerInicioActividad: any = {};
+
+  markerFinActividad: any = {};
+
+  markerPuntosEntrega: any = {};
+
   listarLeyendas = [
     {
       name: "Entregado",
-      color: "#34a853"
+      color: "#34a853",
     },
     {
       name: "Motivado",
-      color: "#FF7668"
+      color: "#FF7668",
     },
     {
       name: "Inicio de Actividad",
-      color: "#FFFF6E"
+      color: "#FFFF6E",
     },
     {
       name: "Fin de Actividad",
-      color: "#6991FD"
+      color: "#6991FD",
     },
     {
       name: "Recorrido",
-      color: "#FF0000"
-    }
+      color: "#FF0000",
+    },
   ];
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -141,15 +155,54 @@ export class DashboardComponent implements OnInit {
   }
 
   public onClick_obtener_operacion(event) {
-    let url = "http://maps.google.com/mapfiles/ms/icons/";
-    let formatoFecha = new Date(this.fechaSeleccionada)
-      .toISOString()
-      .slice(0, 10);
+    let formatoFecha = new Date(this.fechaSeleccionada).toISOString().slice(0, 10);
     this.filtrarOperacion = {
       intIdActividad: event.option.value.Id_Actividad,
       strUserRegistro: event.option.value.strCodUser,
-      dtFechaHoraRegistro: formatoFecha
+      dtFechaHoraRegistro: formatoFecha,
     };
+
+    this.filtrarActividadUsuario = {
+      intIdActividad: event.option.value.Id_Actividad,
+      strUser: event.option.value.strCodUser,
+      dtFecha: formatoFecha,
+    };
+
+    // Obtener actividades del usuario
+    this.usersService
+      .obtener_actividades_usuario(this.filtrarActividadUsuario)
+      .subscribe((data: any[]) => {
+        this.listarActividadesUsuario = [];
+        this.markerInicioActividad = {};
+        this.markerFinActividad = {};
+        data.length == 0
+          ? (this.listarActividadesUsuario = [])
+          : (this.listarActividadesUsuario = this.listarActividadesUsuario.concat(
+              data
+            ));
+
+        this.listarActividadesUsuario.forEach((el) => {
+          if (el.CxInicio != null && el.CyInicio != null) {
+            let markerYellow = Url.URL_MAP_ICON + this.listColorsMarkes[0] + "-dot.png"
+            this.markerInicioActividad = {
+              CxInicio: el.CxInicio,
+              CyInicio: el.CyInicio,
+              colorMarker: markerYellow,
+            };
+          }
+
+          if(el.CxFin != null && el.CyFin != null) {
+            let markerBlue = Url.URL_MAP_ICON + this.listColorsMarkes[3] + "-dot.png";
+            this.markerFinActividad = {
+              CxFin: el.CxFin,
+              CyFin: el.CyFin,
+              colorMarker: markerBlue,
+            };
+          }
+        });
+      });
+
+    // Obtener las operaciones del usuario
     this.usersService
       .obtener_operaciones(this.filtrarOperacion)
       .subscribe((data: any[]) => {
@@ -158,24 +211,20 @@ export class DashboardComponent implements OnInit {
           ? (this.listarOperaciones = [])
           : (this.listarOperaciones = this.listarOperaciones.concat(data));
 
-        this.listarOperaciones.forEach(el => {
+        this.listarOperaciones.forEach((prop) => {
           // Validación para los colores del markers
-          if (el.dtInicioOperacion != "") {
-            url += this.listColorsMarkes[0] + "-dot.png";
-          } else if (el.dtFinOperacion != "") {
-            url += this.listColorsMarkes[3] + "-dot.png";
-          } else if (el.intCodMotivo == 5) {
-            url += this.listColorsMarkes[2] + "-dot.png";
-          } else if (el.intCodMotivo == 22) {
-            url += this.listColorsMarkes[1] + "-dot.png";
+          if (prop.intCodMotivo == 25) {
+            let markerGreen = Url.URL_MAP_ICON + this.listColorsMarkes[2] + "-dot.png";
+            this.colorMarker = markerGreen;
+            // }
+          } else if (prop.intCodMotivo == 15) {
+            let markerBrown = Url.URL_MAP_ICON + this.listColorsMarkes[1] + "-dot.png";
+            this.colorMarker = markerBrown;
+            // }
           } else {
-            url += this.listColorsMarkes[4] + "-dot.png";
+            let markerRed = Url.URL_MAP_ICON + this.listColorsMarkes[4] + "-dot.png";
+            this.colorMarker = markerRed;
           }
-
-          this.lat = el.Cx;
-          this.lng = el.Cy;
-          this.colorMarker = url;
-          this.zoom = 14;
         });
       });
   }
@@ -183,20 +232,50 @@ export class DashboardComponent implements OnInit {
   // Calcular los datos de la tabla.
   public getTotalPendientes() {
     return this.listarActividades
-      .map(x => x.Pendientes)
+      .map((x) => x.Pendientes)
       .reduce((a, b) => a + b, 0);
   }
   public getTotalConfirmados() {
     return this.listarActividades
-      .map(x => x.Confirmados)
+      .map((x) => x.Confirmados)
       .reduce((a, b) => a + b, 0);
   }
   public getTotalMotivados() {
     return this.listarActividades
-      .map(x => x.Motivados)
+      .map((x) => x.Motivados)
       .reduce((a, b) => a + b, 0);
   }
   public getTotal() {
-    return this.listarActividades.map(x => x.Total).reduce((a, b) => a + b, 0);
+    return this.listarActividades
+      .map((x) => x.Total)
+      .reduce((a, b) => a + b, 0);
+  }
+
+  /**
+   * @Author Dominic AV - 14/04/2020
+   * @Summary
+   *  Mostrar coordenadas a traves del componente agm-info-window
+   */
+  mostrarInfoCoordenadas(infoCoordenadas, gm) {
+    this.openInfo = true;
+    infoCoordenadas.open();
+  }
+  
+  /**
+   * @Author Dominic AV - 14/04/2020
+   * @Summary
+   *  Ocultar coordenadas a traves del componente agm-info-window
+   */
+  ocultarInfoCoordenadas(infoCoordenadas, gm) {
+    if(!this.openInfo) {
+      infoCoordenadas.open();
+    } else {
+      infoCoordenadas.close();
+    }
+  }
+
+  clickedMarker(infoCoordenadas) {
+    this.openInfo = false;
+    infoCoordenadas.open();
   }
 }

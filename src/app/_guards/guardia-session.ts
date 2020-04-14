@@ -24,7 +24,6 @@ export class GuardiaSession implements CanActivate {
   private validar_sesion(): boolean {
     if (this.validar_autenticacion()) {
       let usuario = JSON.parse(localStorage.getItem(Parametros.LS_DATOS_USUARIO));
-      console.log("user ==>", usuario);
       if (usuario) {
         Login.setLogin(
           usuario.ApeNom,
@@ -37,6 +36,7 @@ export class GuardiaSession implements CanActivate {
           usuario.Perfil,
           usuario.Usuario
         );
+        // this.router.navigate([Parametros.RUTA_INICIO]);
         return true;
       }
     }

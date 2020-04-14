@@ -41,8 +41,10 @@
 
     &-legend {
       position: absolute;
-      bottom: 30px;
-      left: 8px;
+      // bottom: 30px;
+      // left: 8px;
+      bottom: 4px;
+      left: 4px;
     }
   }
 
@@ -161,8 +163,12 @@
 }
 
 .legend {
-  &__button {
-    background-color: #0b79af;
+  // &__button {
+  //   background-color: #0b79af;
+  // }
+
+  &__card {
+    padding: 4px;
   }
 
   &__title {
@@ -189,6 +195,27 @@
     &-container {
       width: 15px;
       height: 15px;
+    }
+  }
+}
+
+.info-windows {
+  &__coordenadas {
+    color: #737373;
+  }
+
+  &__detail {
+    &-title {
+      font-size: 14px;
+      text-align: left;
+    }
+
+    &-order {
+
+    }
+
+    &-client {
+
     }
   }
 }

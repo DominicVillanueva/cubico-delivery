@@ -9,6 +9,7 @@ import { DashboardComponent } from './_views/dashboard/dashboard.component';
 // @GUARDS
 import { GuardiaInicio } from './_guards/guardia-inicio';
 import { GuardiaSession } from './_guards/guardia-session';
+import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 
 const routes: Routes = [
   {
@@ -17,9 +18,14 @@ const routes: Routes = [
     canActivate: [GuardiaInicio]
   },
   {
-    path: "",
+    path: "dashboard",
     component: HomeComponent,
     children: [
+      {
+        path: '',
+        redirectTo: 'inicio',
+        pathMatch: 'full'
+      },
       {
         path: "inicio",
         component: DashboardComponent
@@ -27,15 +33,20 @@ const routes: Routes = [
     ],
     canActivate: [GuardiaSession]
   },
-  // {
-  //   path: "home",
-  //   redirectTo: "home/inicio",
-  //   pathMatch: 'full'
-  // },
+  {
+    path: "",
+    redirectTo: 'dashboard/inicio',
+    canActivate: [GuardiaSession],
+    pathMatch: 'full'
+  }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [{
+    provide: LocationStrategy,
+    useClass: HashLocationStrategy
+  }]
 })
 export class AppRoutingModule {}

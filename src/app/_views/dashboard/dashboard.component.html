@@ -61,7 +61,7 @@
           <mat-card-content class="delivery__content">
             <mat-icon><i class="fa fa-clipboard-check fa-2x"></i></mat-icon>
             <h1 class="delivery__content-title">
-              500
+              {{ getTotalConfirmados() }}
             </h1>
           </mat-card-content>
         </mat-card>
@@ -76,7 +76,7 @@
               <i class="fa fa-times-circle fa-2x"></i>
             </mat-icon>
             <h1 class="motivated__content-title">
-              500
+              {{ getTotalMotivados() }}
             </h1>
           </mat-card-content>
         </mat-card>
@@ -93,7 +93,7 @@
               <i class="fa fa-shipping-fast fa-2x"></i>
             </mat-icon>
             <h1 class="send__content-title">
-              500
+              {{ getTotal() }}
             </h1>
           </mat-card-content>
         </mat-card>
@@ -104,12 +104,13 @@
     <h1 class="title-container">
       {{ texto }}
     </h1>
-    <div class="dashboard-component__middle-maps">
+    <div class="dashboard-component__middle-maps maps">
       <!-- 
-        MOTIVADO 5: ES EL ESTADO ENTREGADO
-        MOTIVADO 22: ES EL ESTADO MOTIVADO
+        MOTIVADO 25: ES EL ESTADO ENTREGADO
+        MOTIVADO 15: ES EL ESTADO MOTIVADO
        -->
       <agm-map
+        #gm
         [zoom]="zoom"
         [latitude]="lat"
         [longitude]="lng"
@@ -117,19 +118,77 @@
         [scrollwheel]="null"
         [gestureHandling]="'cooperative'"
         [zoomControl]="false"
-        [usePanning]="true"
-      >
-        <agm-marker
-          *ngFor="let item of listarOperaciones"
-          [latitude]="item.Cx"
-          [longitude]="item.Cy"
-          [animation]="'DROP'"
-          [iconUrl]="colorMarker"
-        ></agm-marker>
+        [usePanning]="true">
+
+        <!-- MARKER INICIO ACTIVIDAD -->
+        <ng-container *ngIf="markerInicioActividad.CxInicio != null && markerInicioActividad.CyInicio != null; then inicioActividad;"></ng-container>
+        <ng-template #inicioActividad>
+          <agm-marker
+            [latitude]="markerInicioActividad.CxInicio"
+            [longitude]="markerInicioActividad.CyInicio"
+            [animation]="'DROP'"
+            [iconUrl]="markerInicioActividad.colorMarker"
+            (mouseOver)="mostrarInfoCoordenadas(infoCoordenadas, gm)"
+            (mouseOut)="ocultarInfoCoordenadas(infoCoordenadas, gm)"
+            (markerClick)="clickedMarker(infoCoordenadas)">
+
+            <agm-info-window class="info-windows" [disableAutoPan]="true" #infoCoordenadas>
+                <ng-container *ngIf="openInfo; then openCoordenadas; else openDetalleEmbarque"></ng-container>
+
+                <ng-template #openCoordenadas>
+                  <strong class="info-windows__coordenadas">{{ markerInicioActividad.CxInicio }}, {{ markerInicioActividad.CyInicio }}</strong>
+                </ng-template>
+
+                <ng-template #openDetalleEmbarque>
+                  <div class="info-windows__detail">
+                    <h3 class="info-windows__detail-title">Confirmado</h3>
+                    <mat-divider></mat-divider>
+                    <div class="info-windows__detail-order">Pedido: Datos</div>
+                    <div class="info-windows__detail-client">Cliente: Datos</div>
+                  </div>
+                </ng-template>
+              </agm-info-window>
+          </agm-marker>
+        </ng-template>
+        
+        <!-- MARKER FIN ACTIVIDAD -->
+        <ng-container *ngIf="markerFinActividad.CxFin != null && markerFinActividad.CyFin != null; then finActividad;"></ng-container>
+        <ng-template #finActividad>
+          <agm-marker
+            [latitude]="markerFinActividad.CxFin"
+            [longitude]="markerFinActividad.CyFin"
+            [animation]="'DROP'"
+            [iconUrl]="markerFinActividad.colorMarker"
+            (mouseOver)="mostrarInfoCoordenadas(infoCoordenadas, gm)"
+            (mouseOut)="ocultarInfoCoordenadas(infoCoordenadas, gm)">
+            
+            <agm-info-window [disableAutoPan]="false" #infoCoordenadas>
+              <strong class="maps__coordenadas">{{ markerFinActividad.CxFin }}, {{ markerFinActividad.CyFin }}</strong>
+          </agm-info-window>
+          </agm-marker>
+        </ng-template>
+
+        <!-- MARKER PUNTOS DE ENTREGA -->
+        <ng-container *ngIf="listarOperaciones.length > 0; then puntosEntrega;"></ng-container>
+        <ng-template #puntosEntrega>
+          <agm-marker
+            *ngFor="let item of listarOperaciones" 
+            [latitude]="item.Cx"
+            [longitude]="item.Cy"
+            [animation]="'DROP'"
+            [iconUrl]="colorMarker"
+            (mouseOver)="mostrarInfoCoordenadas(infoCoordenadas, gm)"
+            (mouseOut)="ocultarInfoCoordenadas(infoCoordenadas, gm)">
+
+            <agm-info-window [disableAutoPan]="false" #infoCoordenadas>
+              <strong class="maps__coordenadas">{{ item.Cx }}, {{ item.Cy }}</strong>
+          </agm-info-window>
+          </agm-marker>
+        </ng-template>
       </agm-map>
 
       <div class="dashboard-component__middle-legend legend">
-        <button class="legend__button" [matMenuTriggerFor]="legendMenu" mat-fab>
+        <!-- <button class="legend__button" [matMenuTriggerFor]="legendMenu" mat-fab>
           <mat-icon>menu_book</mat-icon>
         </button>
         <mat-menu #legendMenu="matMenu" yPosition="above">
@@ -142,7 +201,18 @@
               [style.background-color]="prop.color"
             ></div>
           </div>
-        </mat-menu>
+        </mat-menu> -->
+        <mat-card class="legend__card">
+          <h1 class="legend__title">Leyenda</h1>
+          <mat-divider></mat-divider>
+          <div class="legend__list" *ngFor="let prop of listarLeyendas">
+            <span>{{ prop.name }}</span>
+            <div
+              class="legend__list-container"
+              [style.background-color]="prop.color"
+            ></div>
+          </div>
+        </mat-card>
       </div>
     </div>
   </div>
