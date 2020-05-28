@@ -32,20 +32,20 @@ export interface IFiltroActividadUsuario {
 export interface IResponseOperacion {
   Cx?: number;
   Cy?: number;
-  dtFechaHoraRegistro: string;
-  dtFinOperacion: string;
-  dtInicioOperacion: string;
-  intCodMotivo: number;
-  intCode: string;
-  srtRecipientName: string;
-  strAddressRecipient: string;
-  strBarcode: string;
-  strCityRecipient: string;
-  strDescripcionMotivo: string;
-  strDocumentReceived: string;
-  strReceivedBy: string;
-  strSenderName: string;
-  strTipoTransmision: string;
+  dtFechaHoraRegistro?: string;
+  dtFinOperacion?: string;
+  dtInicioOperacion?: string;
+  intCodMotivo?: number;
+  intCode?: string;
+  srtRecipientName?: string;
+  strAddressRecipient?: string;
+  strBarcode?: string;
+  strCityRecipient?: string;
+  strDescripcionMotivo?: string;
+  strDocumentReceived?: string;
+  strReceivedBy?: string;
+  strSenderName?: string;
+  strTipoTransmision?: string;
 }
 
 export interface IResponseActividadUsuario {
@@ -58,4 +58,26 @@ export interface IResponseActividadUsuario {
   Id_Terminal?: number;
   InicioActividad?: string;
   UsuarioRuta?: string;
+}
+
+export interface IResponseBultosEmbarque{
+  Bulto?: string;
+  FechaCurier?: string;
+  FlagCurier?: string;
+  Id_Actividad?: number;
+  Id_BultoMaster?: string;
+  Id_Tx?: string;
+  SubBultoMaster?: string;
+}
+
+export interface IResponseImagenEmbarque {
+  Id_Tra?: string;
+  Id_Tx?: string;
+  RtFirma?: any[];
+  RtPhoto?: any[];
+}
+
+export interface IFiltroEmbarque {
+  id_tra?: string;
+  id_tx?: string;
 }

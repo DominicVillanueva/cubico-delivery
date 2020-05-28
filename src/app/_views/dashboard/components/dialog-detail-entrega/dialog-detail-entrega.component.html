@@ -1,0 +1,32 @@
+<section class="dialog-detail">
+  <div class="dialog-detail__header">
+    <h1 class="dialog-detail__header-title" mat-dialog-title>Detalles</h1>
+    <button mat-button (click)="onNoClick()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <div mat-dialog-content class="dialog-detail__content">
+    <h5 class="dialog-detail__content-subtitle">FOTO</h5>
+    <div class="dialog-detail__content-image">
+      <img [src]="data.image" alt="" width="200" />
+    </div>
+
+    <div class="dialog-detail__content-listbultos">
+      <table class="dialog-detail__content-bultos">
+        <thead>
+          <tr>
+            <th>Bultos</th>
+            <th>Fecha</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of data.listBultoEmbarque">
+            <td>{{ item.Bulto }}</td>
+            <td>{{ item.FechaCurier }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="dialog-detail__actions" mat-dialog-actions></div>
+</section>

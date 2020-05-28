@@ -15,10 +15,15 @@ import { MatCardModule } from "@angular/material/card";
 import { MatTableModule } from "@angular/material/table";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
+import { DialogDetailEntregaComponent } from './dashboard/components/dialog-detail-entrega/dialog-detail-entrega.component';
+import { CommonModule } from '@angular/common';
+import {MatSelectModule} from '@angular/material/select';
+import { DialogReportComponent } from './delivery-reports/components/dialog-report/dialog-report.component';
 
 @NgModule({
-  declarations: [],
+  declarations: [DialogDetailEntregaComponent, DialogReportComponent],
   imports: [
+    CommonModule,
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
@@ -32,7 +37,8 @@ import { MatSnackBarModule } from "@angular/material/snack-bar";
     MatCardModule,
     MatTableModule,
     MatPaginatorModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatSelectModule,
   ],
   exports: [
     MatFormFieldModule,
@@ -48,17 +54,10 @@ import { MatSnackBarModule } from "@angular/material/snack-bar";
     MatCardModule,
     MatTableModule,
     MatPaginatorModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatSelectModule
   ],
   providers: [
-    // {
-    //   provide: DateAdapter,
-    //   useClass: AppDateAdapter
-    // },
-    // {
-    //   provide: MAT_DATE_FORMATS,
-    //   useValue: APP_DATE_FORMATS
-    // },
     {
       provide: MAT_DATE_LOCALE,
       useValue: 'es-Pe'

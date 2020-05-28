@@ -1,3 +1,4 @@
+import { DeliveryReportsComponent } from './_views/delivery-reports/delivery-reports.component';
 // IMPORTS ANGULAR
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
@@ -36,6 +37,7 @@ import { AgmCoreModule } from "@agm/core";
     HeaderComponent,
     FooterComponent,
     SidenavComponent,
+    DeliveryReportsComponent,
   ],
   imports: [
     BrowserModule,
@@ -47,7 +49,7 @@ import { AgmCoreModule } from "@agm/core";
     FormsModule,
     ReactiveFormsModule,
     AgmCoreModule.forRoot({
-      apiKey: ""
+      apiKey: "AIzaSyDc93Y3Wne4C1fLFh1XIIOEle0r34HV0mg"
     }),
   ],
   providers: [GuardiaSession, GuardiaInicio],

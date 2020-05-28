@@ -1,0 +1,14 @@
+<section class="dialog-report">
+  <div class="dialog-report__header">
+    <h1 class="dialog-report__header-title" mat-dialog-title>Foto</h1>
+    <button mat-button (click)="onNoClick()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div mat-dialog-content class="dialog-report__content">
+    <div class="dialog-report__content-image">
+      <img [src]="data.image" alt="" width="100%"/>
+    </div>
+  </div>
+</section>

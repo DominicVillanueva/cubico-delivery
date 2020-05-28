@@ -54,6 +54,19 @@ agm-map {
   width: 100%;
 }
 
+.w-25 {
+  width: 25%;
+}
+
+.w-45 {
+  width: 45%;
+}
+
+.primary-button {
+  background-color: #0b79af !important;
+  color: #ffffff !important;
+}
+
 .title-container {
   border-color: #111;
   background-color: #0b79af;
@@ -61,7 +74,6 @@ agm-map {
   margin: 0px;
   padding: 12px;
   font-weight: lighter;
-  text-align: center;
   margin-bottom: 0px !important;
 }
 
@@ -155,3 +167,7 @@ tr.mat-footer-row td{
 //   flex-flow: column wrap !important;
 //   background-color: #f9f9f9 !important;
 // }
+
+mat-sidenav-content {
+  overflow-y: scroll !important;
+}

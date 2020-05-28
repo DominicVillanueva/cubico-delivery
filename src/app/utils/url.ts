@@ -1,6 +1,6 @@
  export class Url {
 
-     // Desarrollo
+    // Desarrollo
     //  private static HOST = 'http://172.16.32.15';
 
     private static HOST_PROD = 'http://www.cubicowms.pe';

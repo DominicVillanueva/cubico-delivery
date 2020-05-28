@@ -7,10 +7,11 @@
           matInput
           [matDatepicker]="picker"
           (dateChange)="onClick_filtrar_usuarios($event)"
-          [(ngModel)]="fechaSeleccionada"
+          [formControl]="fechaSeleccionada"
           readonly
           (click)="picker.open()"
         />
+        <!-- [(ngModel)]="fechaSeleccionada" -->
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker disabled="false"></mat-datepicker>
       </mat-form-field>
@@ -118,71 +119,232 @@
         [scrollwheel]="null"
         [gestureHandling]="'cooperative'"
         [zoomControl]="false"
-        [usePanning]="true">
-
+        [usePanning]="true"
+      >
         <!-- MARKER INICIO ACTIVIDAD -->
-        <ng-container *ngIf="markerInicioActividad.CxInicio != null && markerInicioActividad.CyInicio != null; then inicioActividad;"></ng-container>
+        <ng-container
+          *ngIf="
+            markerInicioActividad.CxInicio != null &&
+              markerInicioActividad.CyInicio != null;
+            then inicioActividad
+          "
+        ></ng-container>
         <ng-template #inicioActividad>
           <agm-marker
             [latitude]="markerInicioActividad.CxInicio"
             [longitude]="markerInicioActividad.CyInicio"
             [animation]="'DROP'"
             [iconUrl]="markerInicioActividad.colorMarker"
-            (mouseOver)="mostrarInfoCoordenadas(infoCoordenadas, gm)"
-            (mouseOut)="ocultarInfoCoordenadas(infoCoordenadas, gm)"
-            (markerClick)="clickedMarker(infoCoordenadas)">
-
-            <agm-info-window class="info-windows" [disableAutoPan]="true" #infoCoordenadas>
-                <ng-container *ngIf="openInfo; then openCoordenadas; else openDetalleEmbarque"></ng-container>
-
-                <ng-template #openCoordenadas>
-                  <strong class="info-windows__coordenadas">{{ markerInicioActividad.CxInicio }}, {{ markerInicioActividad.CyInicio }}</strong>
-                </ng-template>
-
-                <ng-template #openDetalleEmbarque>
-                  <div class="info-windows__detail">
-                    <h3 class="info-windows__detail-title">Confirmado</h3>
-                    <mat-divider></mat-divider>
-                    <div class="info-windows__detail-order">Pedido: Datos</div>
-                    <div class="info-windows__detail-client">Cliente: Datos</div>
-                  </div>
-                </ng-template>
+            (mouseOver)="mostrarInfoCoordenadas('inicio', 0)"
+            (mouseOut)="ocultarInfoCoordenadas('inicio', 0)"
+            (markerClick)="clickedMarker('inicio', 0)">
+            <ng-container
+              *ngIf="openInfoInicio; then openCoordenadasInicio; else openDetalleEmbarqueInicio"
+            ></ng-container>
+            <ng-template #openCoordenadasInicio>
+              <agm-info-window
+                class="info-windows"
+                [disableAutoPan]="false"
+                [isOpen]="openInfoInicio"
+              >
+                <strong class="info-windows__coordenadas"
+                  >{{ markerInicioActividad.CxInicio }},
+                  {{ markerInicioActividad.CyInicio }}</strong
+                >
               </agm-info-window>
+            </ng-template>
+
+            <ng-template #openDetalleEmbarqueInicio>
+              <agm-info-window
+                class="info-windows"
+                [disableAutoPan]="false"
+                [isOpen]="openDetailInicio"
+                (infoWindowClose)="activarMostrarInfoCoordenadas('init', 0)">
+                <div class="info-windows__detail">
+                  <h3 class="info-windows__detail-title">
+                    Inicio de Actividad
+                  </h3>
+                  <mat-divider></mat-divider>
+                  <small>{{ markerInicioActividad.fechaInicio }}</small>
+                </div>
+              </agm-info-window>
+            </ng-template>
           </agm-marker>
         </ng-template>
-        
+
         <!-- MARKER FIN ACTIVIDAD -->
-        <ng-container *ngIf="markerFinActividad.CxFin != null && markerFinActividad.CyFin != null; then finActividad;"></ng-container>
+        <ng-container
+          *ngIf="
+            markerFinActividad.CxFin != null &&
+              markerFinActividad.CyFin != null;
+            then finActividad
+          "
+        ></ng-container>
         <ng-template #finActividad>
           <agm-marker
             [latitude]="markerFinActividad.CxFin"
             [longitude]="markerFinActividad.CyFin"
             [animation]="'DROP'"
             [iconUrl]="markerFinActividad.colorMarker"
-            (mouseOver)="mostrarInfoCoordenadas(infoCoordenadas, gm)"
-            (mouseOut)="ocultarInfoCoordenadas(infoCoordenadas, gm)">
-            
-            <agm-info-window [disableAutoPan]="false" #infoCoordenadas>
-              <strong class="maps__coordenadas">{{ markerFinActividad.CxFin }}, {{ markerFinActividad.CyFin }}</strong>
-          </agm-info-window>
+            (mouseOver)="mostrarInfoCoordenadas('fin', 0)"
+            (mouseOut)="ocultarInfoCoordenadas('fin', 0)"
+            (markerClick)="clickedMarker('fin', 0)">
+            <!-- <agm-info-window [disableAutoPan]="false">
+              <strong class="maps__coordenadas"
+                >{{ markerFinActividad.CxFin }},
+                {{ markerFinActividad.CyFin }}</strong
+              >
+            </agm-info-window> -->
+            <ng-container
+              *ngIf="openInfoFin; then openCoordenadasFin; else openDetalleEmbarqueFin"
+            ></ng-container>
+            <ng-template #openCoordenadasFin>
+              <agm-info-window
+                class="info-windows"
+                [disableAutoPan]="false"
+                [isOpen]="openInfoFin"
+              >
+                <strong class="info-windows__coordenadas"
+                  >{{ markerFinActividad.CxFin }},
+                  {{ markerFinActividad.CyFin }}</strong
+                >
+              </agm-info-window>
+            </ng-template>
+
+            <ng-template #openDetalleEmbarqueFin>
+              <agm-info-window
+                class="info-windows"
+                [disableAutoPan]="false"
+                [isOpen]="openDetailFin"
+                (infoWindowClose)="activarMostrarInfoCoordenadas('fin', 0)">
+                <div class="info-windows__detail">
+                  <h3 class="info-windows__detail-title">
+                    Fin de la Actividad
+                  </h3>
+                  <mat-divider></mat-divider>
+                  <small>{{ markerFinActividad.fechaFin }}</small>
+                </div>
+              </agm-info-window>
+            </ng-template>
           </agm-marker>
         </ng-template>
 
         <!-- MARKER PUNTOS DE ENTREGA -->
-        <ng-container *ngIf="listarOperaciones.length > 0; then puntosEntrega;"></ng-container>
-        <ng-template #puntosEntrega>
+        <ng-container
+          *ngIf="listarOperaciones.length == 1; then puntoEntrega; else puntosEntregas"
+        ></ng-container>
+        <!-- Cuando existe solo un punto de entrega -->
+        <ng-template #puntoEntrega>
           <agm-marker
-            *ngFor="let item of listarOperaciones" 
+            *ngFor="let item of listarOperaciones; let num = index"
             [latitude]="item.Cx"
             [longitude]="item.Cy"
             [animation]="'DROP'"
             [iconUrl]="colorMarker"
-            (mouseOver)="mostrarInfoCoordenadas(infoCoordenadas, gm)"
-            (mouseOut)="ocultarInfoCoordenadas(infoCoordenadas, gm)">
+            (mouseOver)="mostrarInfoCoordenadas('puntos', num)"
+            (mouseOut)="ocultarInfoCoordenadas('puntos', num)"
+            (markerClick)="clickedMarker('puntos', num)">
 
-            <agm-info-window [disableAutoPan]="false" #infoCoordenadas>
-              <strong class="maps__coordenadas">{{ item.Cx }}, {{ item.Cy }}</strong>
-          </agm-info-window>
+          <ng-container
+            *ngIf="openInfoPuntos; then openCoordenadasPuntos; else openDetalleEmbarquePuntos"
+          ></ng-container>
+          <ng-template #openCoordenadasPuntos>
+            <agm-info-window
+              class="info-windows"
+              [disableAutoPan]="false"
+              [isOpen]="openInfoPuntos"
+            >
+            <strong class="info-windows__coordenadas">
+              {{ item.Cx }}, {{ item.Cy }}
+            </strong>
+            </agm-info-window>
+          </ng-template>
+
+          <ng-template #openDetalleEmbarquePuntos>
+            <agm-info-window
+              class="info-windows"
+              [disableAutoPan]="false"
+              [isOpen]="openDetailPuntos"
+              (infoWindowClose)="activarMostrarInfoCoordenadas('puntos', num)">
+              <div class="info-windows__detail">
+                <h3 class="info-windows__detail-title" *ngIf="item.intCodMotivo == 25" style="color: green;">
+                  Entregado
+                </h3>
+                <!-- {{ item.intCodMotivo == 25 ? 'Confirmado' : 'Motivado' }} -->
+                <h3 class="info-windows__detail-title" *ngIf="item.intCodMotivo != 25" style="color: red;">
+                  Motivado
+                </h3>
+                <mat-divider></mat-divider>
+                <div class="info-windows__detail-pedido">
+                  <b>Pedido: </b><small>{{ item.strBarcode }}</small> 
+                </div> 
+                <div class="info-windows__detail-cliente">
+                  <b>Cliente: </b>
+                  <small>{{item.strSenderName}}</small>
+                  <p class="info-windows__detail-address">{{item.strAddressRecipient}} - {{item.strCityRecipient}}</p>
+                  <p class="info-windows__detail-date">{{jsonParseDate}}</p>
+                  <a class="info-windows__detail-detail" (click)="onClick_showDetail(item.intCode, item.srtRecipientName)">Ver Detalles...</a>
+                </div>
+              </div>
+            </agm-info-window>
+          </ng-template>
+          </agm-marker>
+        </ng-template>
+
+        <!-- Cuando existe varios puntos de entrega -->
+        <ng-template #puntosEntregas>
+          <agm-marker
+            *ngFor="let item of listarOperaciones; let num = index"
+            [latitude]="item.Cx"
+            [longitude]="item.Cy"
+            [animation]="'DROP'"
+            [iconUrl]="colorMarker"
+            (mouseOver)="mostrarInfoCoordenadas('puntos', num)"
+            (mouseOut)="ocultarInfoCoordenadas('puntos', num)"
+            (markerClick)="clickedMarker('puntos', num)">
+
+          <ng-container
+            *ngIf="openInfoPuntos; then openCoordenadasPuntos; else openDetalleEmbarquePuntos"
+          ></ng-container>
+          <ng-template #openCoordenadasPuntos>
+            <agm-info-window
+              class="info-windows"
+              [disableAutoPan]="false"
+              [isOpen]="isInfoWindowOpen(num)"
+            >
+            <strong class="info-windows__coordenadas">
+              {{ item.Cx }}, {{ item.Cy }}
+            </strong>
+            </agm-info-window>
+          </ng-template>
+          <ng-template #openDetalleEmbarquePuntos>
+            <agm-info-window
+              class="info-windows"
+              [disableAutoPan]="false"
+              (infoWindowClose)="activarMostrarInfoCoordenadas('puntos', num)"
+              [isOpen]="isInfoDetailWindowOpen(num)">
+              <div class="info-windows__detail">
+                <h3 class="info-windows__detail-title" *ngIf="item.intCodMotivo == 25" style="color: green;">
+                  Entregado
+                </h3>
+                <!-- {{ item.intCodMotivo == 25 ? 'Confirmado' : 'Motivado' }} -->
+                <h3 class="info-windows__detail-title" *ngIf="item.intCodMotivo == 15" style="color: red;">
+                  Motivado
+                </h3>
+                <mat-divider></mat-divider>
+                <div class="info-windows__detail-pedido">
+                  <b>Pedido: </b><small>{{ item.strBarcode }}</small> 
+                </div> 
+                <div class="info-windows__detail-cliente">
+                  <b>Cliente: </b>
+                  <small>{{item.strSenderName}}</small>
+                  <p class="info-windows__detail-address">{{item.strAddressRecipient}} - {{item.strCityRecipient}}</p>
+                  <p class="info-windows__detail-date">{{jsonParseDate}}</p>
+                  <a class="info-windows__detail-detail" (click)="onClick_showDetail(item.intCode, item.srtRecipientName)">Ver Detalles...</a>
+                </div>
+              </div>
+            </agm-info-window>
+          </ng-template>
           </agm-marker>
         </ng-template>
       </agm-map>

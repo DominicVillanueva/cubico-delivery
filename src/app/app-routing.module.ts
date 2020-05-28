@@ -1,3 +1,4 @@
+import { DeliveryReportsComponent } from './_views/delivery-reports/delivery-reports.component';
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 
@@ -29,6 +30,10 @@ const routes: Routes = [
       {
         path: "inicio",
         component: DashboardComponent
+      },
+      {
+        path: "reporte",
+        component: DeliveryReportsComponent
       }
     ],
     canActivate: [GuardiaSession]

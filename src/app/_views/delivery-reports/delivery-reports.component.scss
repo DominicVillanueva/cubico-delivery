@@ -1,0 +1,26 @@
+.report-component {
+    display: flex;
+    flex-flow: column nowrap;
+    &__filter {
+        flex: 0 1;
+
+        &-inputs {
+            display: flex;
+            justify-content: space-between;
+            flex-flow: row nowrap;
+            align-items: baseline;
+            padding: 12px 12px 0px;
+        }
+
+        &-actions {
+            display: flex;
+            margin-top: 4px;
+            justify-content: space-around;
+        }
+    }
+
+    &__list {
+        flex: 1 0;
+        margin: 32px 0px 0px;
+    }
+}
