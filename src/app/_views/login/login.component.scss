@@ -7,16 +7,17 @@
   &__left {
     display: flex;
     position: relative;
-    flex: 1 0;
-    background: url(../../../assets/img/background-login.jpeg) 50% / cover
-      no-repeat;
+    flex: 1 0 25%;
+    background: url(../../../assets/img/login-background.jpg) 50% / cover no-repeat;
+    opacity: 0.9;
+    height: auto;
+    width: 100%;
 
     &-img {
-      padding: 20px;
-      width: 100%;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      width: 210px;
     }
   }
 
@@ -27,7 +28,7 @@
     background-color: #fff;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+    // box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
   }
 }
 

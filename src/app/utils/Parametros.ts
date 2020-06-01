@@ -6,6 +6,9 @@ export class Parametros {
         horizontalPosition: 'end'
     };
 
+    // Url Visor Reporte
+    public static URL_VISOR: string = '/Visor.aspx';
+
     //Home
     public static RUTA_INICIO = '/dashboard/inicio';
     public static RUTA_LOGIN = '/login';

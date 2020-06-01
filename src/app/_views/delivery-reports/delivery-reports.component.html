@@ -35,7 +35,7 @@
 
     <div class="report-component__filter-actions">
       <button class="w-25 primary-button" mat-flat-button (click)="onClick_filter_orders()">Filtrar</button>
-      <button class="w-25 primary-button" mat-flat-button (click)="showReportDocument()">Reporte</button>
+      <button class="w-25 primary-button" mat-flat-button (click)="showReportDocument()" [disabled]="isDisabledBtnReport">Reporte</button>
     </div>
   </div>
   <div class="report-component__list">
@@ -97,7 +97,7 @@
 	  <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef>Ver</th>
         <td mat-cell *matCellDef="let element">
-          <button class="primary-button" mat-mini-fab (click)="onClick_showDialogReport(element.intCode, element.srtRecipientName)">
+          <button class="primary-fab" mat-mini-fab (click)="onClick_showDialogReport(element.intCode, element.srtRecipientName)">
             <mat-icon>camera_alt</mat-icon>
           </button>
         </td>

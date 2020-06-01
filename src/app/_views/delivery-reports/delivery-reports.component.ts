@@ -1,3 +1,4 @@
+import { Url } from "../../utils/Url";
 import { DialogReportComponent } from "./components/dialog-report/dialog-report.component";
 import { MatDialog } from "@angular/material/dialog";
 import { MatSnackBar } from "@angular/material/snack-bar";
@@ -17,8 +18,6 @@ import { Component, OnInit } from "@angular/core";
 
 import { MatTableDataSource } from "@angular/material/table";
 
-import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable'
 
 @Component({
   selector: "app-delivery-reports",
@@ -34,8 +33,7 @@ export class DeliveryReportsComponent implements OnInit {
   listarOperaciones: IResponseOperacion[] = [];
   filtrarEmbarque: IFiltroEmbarque = {};
 
-  Id_Tra: String = "";
-  finOperacion: String = "";
+  isDisabledBtnReport: boolean = true;
 
   dataSource: any;
 
@@ -88,6 +86,7 @@ export class DeliveryReportsComponent implements OnInit {
         this.listarEmbarques = [];
         if (data.length > 0) {
           this.listarEmbarques = this.listarEmbarques.concat(data);
+          this.isDisabledBtnReport = true;
         }
       });
   }
@@ -101,8 +100,6 @@ export class DeliveryReportsComponent implements OnInit {
       strUserRegistro: obj.strCodUser,
       dtFechaHoraRegistro: formatoFecha,
     };
-
-    this.Id_Tra = obj.Id_Tra;
   }
 
   onClick_filter_orders() {
@@ -141,7 +138,7 @@ export class DeliveryReportsComponent implements OnInit {
               ).toLocaleString();
             }
           });
-
+          this.isDisabledBtnReport = false;
           this.dataSource = new MatTableDataSource(this.listarOperaciones);
           this.dataSource.paginator = this.paginator;
         } else {
@@ -175,6 +172,23 @@ export class DeliveryReportsComponent implements OnInit {
   }
 
   showReportDocument() {
+    let url_visor = Url.URL_CUBICO + Parametros.URL_VISOR 
+                    + '?Reporte=' + 'ListaPedidosCourierFiltro' 
+                    + '&usuario=' + this.filtrarOperacion.strUserRegistro
+                    + '&idRuta=' + '1'
+                    + '&dtInic=' + this.filtrarOperacion.dtFechaHoraRegistro
+                    + '&idActividad=' + this.filtrarOperacion.intIdActividad;
+    
+    window.open(url_visor, '_blank');
+  }
+
+  /**
+   * @summary
+   *  Metodos en desuso.
+   * @deprecated
+   */
+
+  /*showReportDocument() {
     var doc = new jsPDF();
     // Add Data document
     doc.rect(100, 13, 89, 10); // empty square
@@ -235,6 +249,7 @@ export class DeliveryReportsComponent implements OnInit {
     doc.save('ReporteActividad.pdf');
   }
 
+
   getListarOperacionesTableReport() {
     let data = [];
     this.listarOperaciones.forEach(element => {
@@ -265,6 +280,7 @@ export class DeliveryReportsComponent implements OnInit {
 
     return valueDay + "/" + valueMonth + "/" + valueYear;
   }
+  */
 }
 
 export interface DialogDataReport {
