@@ -16,8 +16,7 @@
 
     &-cards {
       display: flex;
-      flex-flow: column wrap;
-      justify-content: flex-end;
+      flex-flow: column-reverse wrap;
       flex: 1 0;
       padding-bottom: 8px;
 
@@ -109,7 +108,6 @@
 .cards {
   &__top {
     display: flex;
-    padding-bottom: 8px;
     justify-content: space-between;
 
     &-delivery {
@@ -127,6 +125,7 @@
 
   &__bottom {
     display: flex;
+    padding-bottom: 8px;
     &-send {
       border-top: 15px solid #fbbc05;
       color: #737373;

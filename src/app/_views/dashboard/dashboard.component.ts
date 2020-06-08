@@ -127,6 +127,11 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
+    //Add 'implements OnInit' to the class.  
+  }
+
+  ngAfterViewInit(): void {
     this.getAllEmbarques(this.fechaSeleccionada.value);
   }
 
@@ -278,11 +283,6 @@ export class DashboardComponent implements OnInit {
             this.jsonParseDate = parseFecha;
             // }
           } else if (prop.intCodMotivo == 15) {
-            let markerBrown =
-              Url.URL_MAP_ICON + this.listColorsMarkes[1] + "-dot.png";
-            this.colorMarker = markerBrown;
-            // }
-          } else {
             let markerRed =
               Url.URL_MAP_ICON + this.listColorsMarkes[4] + "-dot.png";
             this.colorMarker = markerRed;
